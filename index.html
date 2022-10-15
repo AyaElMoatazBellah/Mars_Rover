@@ -1,12 +1,61 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Hello This Is Mars Rover</title>
-</head>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css\style.css">
+    <link rel="stylesheet" href="css\bootstrap.min.css">  
+    <script type="js/script.js"></script>
+    <title>Hello This Is Mars Rover</title>
+
+  </head>
 <body>
-	<h1>Mars Rover is Here !</h1>
+  
+  <div id="box" ></div>
+  <div calss="container">
+    <div class="contact-box">
+      <div class="left">
+        <div class="right">
+          <h2 style="color: white;">Mars Rover</h2>
+          <p class="p">Current Coordinates</p>
+          <p id="Rover_Coordinates"></p>
+          <input type="text" id="command"class="command" name="command" placeholder="Enter your Command">
+          <input class ="submit" id="Move" type="submit" value="Move This Rover" onclick="ExecuteCommand();">
+        </div>
+      </div>
+    </div>
+    
+  </div>
+ <div class ="popup" id="popup">
+     <div class="inner">
+      <P id="pop_p"> Pleasse Insert the X , Y , Direction You want Your Mars Rover to Start in </p>
+        <div>
+          <label for="Name">X:</label>
+                    <input type="text" id="X-axsis" name="X-axsis" placeholder="..,-1,0,1,..">
+        </div>
+        <div>
+          <label for="Name">Y:</label>
+                    <input type="text" id="Y-axsis" name="Y-axsis" placeholder="..,-1,0,1,..">
+        </div>
+                <div>
+                  <label for="Name">Direction:</label>
+                     <select id="Direction" name="Direction"  placeholder="South,North,East,West">
+                        <option value="South">South</option>
+                        <option value="North">North</option>
+                        <option value="East">East</option>
+                        <option value="West">West</option>
+                     </select>
+                </div>
+                <input class ="submit" id="submit"type="submit" value="Start" onclick="isValidCoordinates(); ">
+        
+     </div>
+    
+  </div>
+
+  <script src="js/jquery-2.1.4.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/ajax-utils.js"></script>
+  <script src="js/script.js"></script>
 
 </body>
 </html>

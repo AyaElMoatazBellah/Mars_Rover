@@ -1,5 +1,3 @@
-// DOM manipulation
-
 
   // show First popup or hide it 
   $('.submit').click(function(){
@@ -21,85 +19,81 @@ var origin_H = Math.floor(height/2);
 
 
 // Onclick For Start Button it place the Rover at his First Place
-function isValidCoordinates () {
-Position.X = document.getElementById('X-axsis').value;
-Position.Y= document.getElementById('Y-axsis').value;
-Position.Direction=document.getElementById('Direction').value;
-
-Start_Move_Rover(Position.X,Position.Y,Position.Direction);
+function Place_Rover() {
+Start_Move_Rover(document.getElementById('X-axsis').value,document.getElementById('Y-axsis').value,document.getElementById('Direction').value);
 }
 
+//dictionary to avoid If Conditions
+dictionary = {};
 //if Command symbole if 'f' or 'F' move forward with same direction
-function FowrwardCommand(x,y,direction)
+function ForwardCommand(x,y,direction)
 {
-  if(direction === "South"){y =  parseInt(y)-1}
-  else if  (direction === "North"){y = parseInt(y)+1}
-  else if(direction === "East") {x =  parseInt(x)+1}
-  else if(direction === "West") {x =  parseInt(x)-1}
-    Position.X = x;
-    Position.Y= y;
-    Position.Direction=direction;
+  dictionary={
+    'North':[x,(parseInt(y)+1)],
+    'South':[x,parseInt(y)-1],
+    'West':[parseInt(x)-1,y],
+    'East':[parseInt(x)+1,y] 
+    }
+      Position.X=dictionary[direction][0];
+      Position.Y = dictionary[direction][1];
+      Position.Direction=direction;
+     return Position
 }
-
 //if Command symbole if 'b' or 'B' move forward with same direction
 function BackwardCommand(x,y,direction)
 {
-  if(direction === "South"){y =  parseInt(y)+1}
-  else if  (direction === "North"){y = parseInt(y)-1}
-  else if(direction === "East") {x = parseInt(x)-1}
-  else if(direction === "West") {x = parseInt(x)+1}
-    Position.X = x;
-    Position.Y= y;
-    Position.Direction=direction;
+  
+  dictionary={
+    'North':[x,(parseInt(y)-1)],
+    'South':[x,parseInt(y)+1],
+    'West':[parseInt(x)+1,y],
+    'East':[parseInt(x)-1,y] 
+    }
+      Position.X=dictionary[direction][0];
+      Position.Y = dictionary[direction][1];
+      Position.Direction=direction;
+      return Position
 }
 function LeftCommand(x,y,direction)
 {
-  if(direction === "South"){
-    direction="East"
-    Rover.style.transform = ' rotate(0)';
-  }
-  else if  (direction === "North"){
-    direction="West"
-    Rover.style.transform = 'rotate(-0.25turn)';
-  }
-  else if(direction === "East") {
-    direction="North"
-    Rover.style.transform = 'rotate(3.142rad)'; 
-  }
-  else if(direction === "West") {
-    direction="South"
-    Rover.style.transform = 'rotate(90deg)';
-  }
-    Position.X = x;
-    Position.Y= y;
-    Position.Direction=direction;
+  dictionary={
+    'North':'West',
+    'South':'East',
+    'West':'South',
+    'East':'North' 
+    }
+      move_rover_Icon(dictionary[direction]);
+      Position.X = x;
+      Position.Y= y;
+      Position.Direction=dictionary[direction];
+      return Position
 }
 function RightCommand(x,y,direction)
 {
-  var Rover = document.getElementById('box');
-  if(direction === "South"){
-    direction="West"
-    Rover.style.transform = 'rotate(3.142rad)'; 
-  }
-  else if  (direction === "North"){
-    direction="East"
-    Rover.style.transform = ' rotate(0)';
-  }
-  else if(direction === "East") {
-    direction="South"
-    Rover.style.transform = 'rotate(90deg)';
-  }
-  else if(direction === "West") {
-    direction="North"
-     Rover.style.transform = 'rotate(-0.25turn)';
-  }
-    Position.X = x;
-    Position.Y= y;
-    Position.Direction=direction;
-    console.log("Done")
+  dictionary={
+    'North':'West',
+    'South':'East',
+    'West':'South',
+    'East':'North' 
+    }
+      move_rover_Icon(dictionary[direction]);
+      Position.X = x;
+      Position.Y= y;
+      Position.Direction=dictionary[direction];
+      return Position
+}
+function move_rover_Icon(direction)
+{
+ var Rover = document.getElementById('box');
+ if(direction === "South"){Rover.style.transform = ' rotate(90deg)';}
+ else if  (direction === "North"){Rover.style.transform = 'rotate(-0.25turn)';}
+ else if(direction === "East") {Rover.style.transform = 'rotate(0)'; }
+ else if(direction === "West") { Rover.style.transform = 'rotate(3.142rad)';}
 }
 
 //Main Function To move Rover and reassign new coordinates of the rover 
+// this function Move rover according to web page height and width by dividing it to 4 quads so we 
+// have to check if input (-,+) , (+,+) , (-,-) , (+,-) so we can handele it 
 function Start_Move_Rover(x ,y,direction)
 {
     var Rover = document.getElementById('box');
@@ -140,7 +134,6 @@ function Start_Move_Rover(x ,y,direction)
 
 // Onclick function for Excute Command button that moves the rover accourding to each symbole in Command
 function ExecuteCommand(){
-  
   //Command Text
   var command = document.getElementById('command').value
   var count = parseInt(command.length);
@@ -153,32 +146,32 @@ function ExecuteCommand(){
     if(count === i) {
         clearInterval(i);
     }
-   }, 400);
+   }, 200);
   }
 
 //Here we Get the seperate symbol and compare it to know which command to Excute
 function Move_Rover(command,x,y,direction) {
    if(command === "f" || command ==="F")
    {
-     FowrwardCommand(x,y,direction);
+     Position = ForwardCommand(x,y,direction);
      Start_Move_Rover(Position.X,Position.Y,Position.Direction);
 
    }
    else if (command === "b" || command === "B")
    {
-    FowrwardCommand(x,y,direction);
+    Position = BackwardCommand(x,y,direction);
     Start_Move_Rover(Position.X,Position.Y,Position.Direction);
 
    }
    else if (command === "l" || command === "L")
    {
-     LeftCommand(x,y,direction);
+    Position = LeftCommand(x,y,direction);
      Start_Move_Rover(Position.X,Position.Y,Position.Direction);
 
    }
    else if (command === "r" || command === "R")
    {
-    RightCommand(x,y,direction);
+     Position = RightCommand(x,y,direction);
     Start_Move_Rover(Position.X,Position.Y,Position.Direction);
    }
 }
